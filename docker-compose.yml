@@ -1,0 +1,56 @@
+web:
+  build: ./.docker/.
+  ports:
+    - "80:80"
+    - "443:443"
+  links:
+    - db
+  volumes:
+    - ../e-hallpass.com:/var/www/html
+    - "./.docker/php.ini:/usr/local/etc/php/php.ini"
+
+webshbi:
+  build: "./.docker/shbi/."
+  ports:
+    - "8001:80"
+  links:
+    - db
+  volumes:
+    - "../devshbi:/var/www/html"
+
+larademo:
+  build: "./.docker/shbi/."
+  ports:
+    - "8002:80"
+  links:
+    - db
+  volumes:
+    - "../larademo:/var/www/html"
+ehp:
+  build: "./.docker/shbi/."
+  ports:
+    - "8003:80"
+  links:
+    - db
+  volumes:
+    - ../e-hallpass.webs:/var/www/html
+
+db:
+        image: mysql:5.7
+        container_name: db
+        command: --max_allowed_packet=500M
+                 --wait_timeout=2880000
+        volumes:
+            - db_data:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_ROOT_HOST=%
+
+adminer:
+    image: adminer
+    restart: always
+    links: 
+      - db:db
+    ports:
+      - 8080:8080      
+    
