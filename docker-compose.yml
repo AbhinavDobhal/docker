@@ -3,10 +3,13 @@ web:
   ports:
     - "80:80"
     - "443:443"
+    - "6001:6001"
+  expose:
+    - "6001"
   links:
     - db
   volumes:
-    - ../e-hallpass.com:/var/www/html
+    - ../class.e-hallpass:/var/www/html
     - "./.docker/php.ini:/usr/local/etc/php/php.ini"
 
 webshbi:
